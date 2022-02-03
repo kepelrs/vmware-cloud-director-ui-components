@@ -142,6 +142,16 @@ export class NumberWithUnitFormInputComponent extends BaseFormControl implements
      */
     @Input() hintPosition = 'top-left';
 
+    /**
+     * Flag to display errors when the input is readonly
+     */
+    @Input() readonlyShowErrors: boolean = false;
+
+    /**
+     * Flag to display descriptions when the input is readonly
+     */
+    @Input() readonlyShowDescription: boolean = false;
+
     private _unitOptions: Unit[] = [];
 
     /**
@@ -449,6 +459,15 @@ export class NumberWithUnitFormInputComponent extends BaseFormControl implements
 
         // Return only the value when unitOptions was not set.
         return value.toString();
+    }
+
+    /* TODO: properly override this.showErrors */
+    get cshowErrors() {
+        if (this.isReadOnly) {
+            return this.readonlyShowErrors && !this.formControl.valid;
+        } else {
+            return this.showErrors;
+        }
     }
 
     /**

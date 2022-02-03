@@ -71,7 +71,7 @@ export class NumberWithUnitFormInputExampleComponent {
         this.formGroup = fb.group({
             readonly: new FormControl(false),
             disabled: new FormControl(false),
-            memory: new FormControl(1024 * 2, [Validators.required, memoryValidator]),
+            memory: new FormControl(1024 * 2, [Validators.required, memoryValidator, Validators.min(1000000)]), // TODO: Revert Validators.min(1000000)
             cpuLimit: new FormControl(-1, [cpuValidator]),
             timePeriodSelection: new FormControl(1, [timePeriodValidator]),
         });

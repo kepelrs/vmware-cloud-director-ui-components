@@ -24,7 +24,9 @@ type of units.
     </section>
 
     <section>
+        <!-- TODO: standalone readonlyShowErrors example and remove [readonlyShowErrors] below -->
         <vcd-number-with-unit-form-input
+            [readonlyShowErrors]="true"
             [formControlName]="'memory'"
             [label]="'Memory'"
             [unitOptions]="memoryOptions"
