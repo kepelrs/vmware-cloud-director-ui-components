@@ -127,7 +127,11 @@ export class BaseFormControl implements ControlValueAccessor, CanBeReadOnly {
     }
 
     get showErrors(): boolean {
-        return this.formControl.enabled && !this.formControl.pristine && !this.formControl.valid;
+        if (this.isReadOnly) {
+            return !this.formControl.valid;
+        } else {
+            return this.formControl.enabled && !this.formControl.pristine && !this.formControl.valid;
+        }
     }
 
     /**

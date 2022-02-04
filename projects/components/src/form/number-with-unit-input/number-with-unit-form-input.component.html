@@ -2,16 +2,13 @@
     *ngIf="isReadOnly; else notReadOnly"
     class="clr-form-control"
     [vcdResponsiveInput]="{ disabled: !isResponsive }"
-    [ngClass]="{ 'clr-error': cshowErrors }"
+    [ngClass]="{ 'clr-error': showErrors }"
 >
     <label *ngIf="label" class="clr-control-label">{{ label }}</label>
     <span class="clr-control-container readonly-text">
         {{ displayValue || '-' }}
 
-        <ng-container *ngIf="readonlyShowErrors">
-            <ng-template [ngTemplateOutlet]="errorsTemplate"></ng-template>
-        </ng-container>
-
+        <ng-template [ngTemplateOutlet]="errorsTemplate"></ng-template>
         <ng-container *ngIf="readonlyShowDescription">
             <ng-template [ngTemplateOutlet]="descriptionTemplate"></ng-template>
         </ng-container>
@@ -23,7 +20,7 @@
         <label *ngIf="label" class="clr-control-label" [for]="id" [ngClass]="{ 'required-field': showAsterisk }">{{
             label
         }}</label>
-        <div class="clr-control-container" [ngClass]="{ 'clr-error': cshowErrors }">
+        <div class="clr-control-container" [ngClass]="{ 'clr-error': showErrors }">
             <div class="clr-input-wrapper">
                 <input
                     [id]="id"
@@ -38,7 +35,7 @@
                     [attr.placeholder]="placeholder"
                     [attr.size]="size"
                     [attr.aria-required]="showAsterisk"
-                    [attr.aria-describedby]="cshowErrors ? errorsId : descriptionId"
+                    [attr.aria-describedby]="showErrors ? errorsId : descriptionId"
                     (blur)="updateUnlimitedCheckbox()"
                 />
                 <ng-container [ngSwitch]="unitOptions.length">
@@ -62,7 +59,7 @@
                         </select>
                     </div>
                 </ng-container>
-                <clr-icon *ngIf="cshowErrors" class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
+                <clr-icon *ngIf="showErrors" class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
                 <clr-signpost *ngIf="hint">
                     <clr-signpost-content [clrPosition]="hintPosition" *clrIfOpen>
                         <p>{{ hint }}</p>
@@ -91,7 +88,7 @@
 </ng-template>
 
 <ng-template #errorsTemplate>
-    <div class="clr-subtext" *ngIf="cshowErrors" [id]="errorsId">
+    <div class="clr-subtext" *ngIf="showErrors" [id]="errorsId">
         <div *ngFor="let error of errors | keyvalue">
             <div>{{ error.key | translate: getErrorTranslationParams(error.value) }}</div>
         </div>
@@ -99,7 +96,7 @@
 </ng-template>
 
 <ng-template #descriptionTemplate>
-    <div class="clr-subtext" *ngIf="!cshowErrors && description" [id]="descriptionId">
+    <div class="clr-subtext" *ngIf="!showErrors && description" [id]="descriptionId">
         {{ description }}
     </div>
 </ng-template>
