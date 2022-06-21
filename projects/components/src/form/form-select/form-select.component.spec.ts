@@ -5,6 +5,7 @@
 
 import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SelectOption } from '../../common/interfaces/select-option';
 import { WidgetFinder, WidgetObject } from '../../utils/test/widget-object';
 import { configureFormInputTestingModule } from '../base-form-control.spec';
@@ -108,6 +109,31 @@ describe('FormSelectComponent', () => {
             selectInput.select(1);
             expect(selectInput.clrIconShape).toEqual('');
         });
+    });
+});
+
+describe('FormSelectComponent in conjunction with BrowserAnimationsModule', () => {
+    let hostComponent: TestHostComponent;
+    let finder: WidgetFinder<TestHostComponent>;
+    let selectInput: VcdFormSelectWidgetObject;
+
+    beforeEach(async () => {
+        await configureFormInputTestingModule(TestHostComponent, [BrowserAnimationsModule]);
+        finder = new WidgetFinder(TestHostComponent);
+        finder.detectChanges();
+        hostComponent = finder.hostComponent;
+
+        selectInput = finder.find({ woConstructor: VcdFormSelectWidgetObject });
+    });
+
+    it('does not lose selection when new options are set', () => {
+        selectInput.component.formControl.setValue('two');
+        expect(hostComponent.formGroup.get('selectInput').value).toEqual(hostComponent.options[2].value);
+        expect(selectInput.value).toEqual(hostComponent.options[2].value as string);
+        hostComponent.options = hostComponent.options.map((option) => ({ ...option }));
+        selectInput.detectChanges();
+        expect(hostComponent.formGroup.get('selectInput').value).toEqual(hostComponent.options[2].value);
+        expect(selectInput.value).toEqual(hostComponent.options[2].value as string);
     });
 });
 

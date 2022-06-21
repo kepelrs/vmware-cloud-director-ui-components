@@ -101,9 +101,12 @@ class TestHostComponent {
     }
 }
 
-export async function configureFormInputTestingModule(testHostComponent: Type<unknown>): Promise<void> {
+export async function configureFormInputTestingModule(
+    testHostComponent: Type<unknown>,
+    extraModules: any[] = []
+): Promise<void> {
     await TestBed.configureTestingModule({
-        imports: [VcdFormModule, ReactiveFormsModule],
+        imports: [VcdFormModule, ReactiveFormsModule, ...extraModules],
         declarations: [testHostComponent],
         providers: [
             {

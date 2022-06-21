@@ -43,4 +43,8 @@ export class FormSelectComponent extends BaseFormControl {
         // option.value and formControl.value can be of type number or string
         return this.options.find((option) => option.value.toString() === this.formControl.value.toString());
     }
+
+    trackByOptionValue(index: number, option: SelectOption) {
+        return option.value;
+    }
 }
