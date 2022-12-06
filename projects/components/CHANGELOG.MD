@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [13.0.1-dev.4]
+### Fixed
+* Fixed `number-with-unit-input` not restoring its value on repeated "unlimited" toggling.
+
 ## [13.0.1-dev.3]
 ### Fixed
 * `vcd-form-select` can now accept validators that return values to be used with translation
