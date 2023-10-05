@@ -375,7 +375,9 @@ export class DatagridComponent<R extends B, B = any> implements OnInit, AfterVie
         private translationService: TranslationService,
         private changeDetectorRef: ChangeDetectorRef,
         private subTracker: SubscriptionTracker
-    ) {}
+    ) {
+        this.trackBy = (index: number, record): string => (record as any).href;
+    }
 
     /**
      * The pagination information that the user should supply.
@@ -684,6 +686,9 @@ export class DatagridComponent<R extends B, B = any> implements OnInit, AfterVie
     };
     private currentDetailRowRenderSpec: { rendererSpec: ComponentRendererSpec<DetailRowConfig<R>> };
 
+    protected clrDgItemsTrackBy: (record: B) => any;
+    protected _trackBy: TrackByFunction<B>;
+
     private getContextualActions(): ActionItem<R, unknown>[] {
         return this.actions.filter(
             (action) => action.actionType !== ActionType.STATIC_FEATURED && action.actionType !== ActionType.STATIC
@@ -735,9 +740,14 @@ export class DatagridComponent<R extends B, B = any> implements OnInit, AfterVie
      *
      * If the record has a href, defaults to that. Else, defaults to index.
      */
-    @Input() trackBy: TrackByFunction<B> = (index: number, record): string => {
-        return (record as any).href;
-    };
+    @Input() set trackBy(trackByFn: TrackByFunction<B>) {
+        this._trackBy = trackByFn;
+        this.clrDgItemsTrackBy = (record) => trackByFn(undefined, record);
+    }
+
+    get trackBy(): TrackByFunction<B> {
+        return this._trackBy;
+    }
 
     /**
      * Returns an identifier for the given column at the given index.
